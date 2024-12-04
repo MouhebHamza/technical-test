@@ -1,0 +1,21 @@
+# Node.js (for Angular)
+node_modules/
+dist/
+.angular/
+npm-debug.log
+
+# Spring Boot (for Back-End)
+target/
+*.log
+.idea/
+.classpath
+.project
+.settings/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files (optional)
+.vscode/
+.idea/

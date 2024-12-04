@@ -1,0 +1,170 @@
+<div class="main-content p-6 bg-gray-50">
+  <div class="container mx-auto">
+
+    <div class="flex flex-col md:flex-row gap-6">
+
+      <div class="filters-section w-full md:w-1/4">
+        <div class="filters-section bg-white p-4 rounded-lg shadow-md mb-6">
+          <form (ngSubmit)="onSubmit()">
+            <div class="filter-group space-y-4">
+              <div class="filter-item">
+                <label class="block font-semibold">Property Type</label>
+                <select [(ngModel)]="filters.propertyType" name="propertyType" class="w-full p-2 rounded border">
+                  <option value="">Any</option>
+                  <option value="hotel">Hotel Room</option>
+                  <option value="apartment">Apartment</option>
+                </select>
+              </div>
+
+              <div class="filter-item">
+                <label class="block font-semibold">Building Name</label>
+                <input
+                  type="text"
+                  [(ngModel)]="filters.buildingName"
+                  name="buildingName"
+                  class="w-full p-2 rounded border"
+                  placeholder="Building Name"
+                />
+              </div>
+
+              <div class="filter-item">
+                <label class="block font-semibold">City</label>
+                <input
+                  type="text"
+                  [(ngModel)]="filters.city"
+                  name="city"
+                  class="w-full p-2 rounded border"
+                  placeholder="City"
+                />
+              </div>
+
+              <div class="filter-item">
+                <label class="block font-semibold">Address</label>
+                <input
+                  type="text"
+                  [(ngModel)]="filters.address"
+                  name="address"
+                  class="w-full p-2 rounded border"
+                  placeholder="Address"
+                />
+              </div>
+
+              <div class="filter-item">
+                <label class="block font-semibold">Country</label>
+                <input
+                  type="text"
+                  [(ngModel)]="filters.country"
+                  name="country"
+                  class="w-full p-2 rounded border"
+                  placeholder="Country"
+                />
+              </div>
+
+              <div>
+                  <label class="block font-semibold">Min Price</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="filters.minPrice"
+                    name="minPrice"
+                    class="w-full p-2 rounded border"
+                    placeholder="Min Price"
+                  />
+                </div>
+<div>
+                  <label class="block font-semibold">Max Price</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="filters.maxPrice"
+                    name="maxPrice"
+                    class="w-full p-2 rounded border"
+                    placeholder="Max Price"
+                  />
+                </div>
+              <div>
+                  <label class="block font-semibold">From Date</label>
+                  <input
+                    type="date"
+                    [(ngModel)]="filters.fromDate"
+                    name="fromDate"
+                    class="w-full p-2 rounded border"
+                  />
+                </div>
+<div>
+                  <label class="block font-semibold">To Date</label>
+                  <input
+                    type="date"
+                    [(ngModel)]="filters.toDate"
+                    name="toDate"
+                    class="w-full p-2 rounded border"
+                  />
+                </div>
+              <div class="filter-actions mt-4">
+                <button type="submit" class="btn btn-primary px-4 py-2 rounded bg-blue-600 text-white">Apply Filters</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+        <div class="cards-section w-full md:w-2/3">
+        <div *ngIf="loading" class="text-center my-4">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+          <p>Loading reservations, please wait...</p>
+        </div>
+
+        <div *ngIf="!loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+          <div 
+            *ngFor="let reservation of paginatedReservations" 
+            class="card bg-white shadow-lg rounded-lg p-4 w-full max-w-xs hover:transform hover:scale-105 transition-transform duration-300"
+          >
+            <div class="card-body">
+              <h5 class="font-bold">{{ reservation.property?.buildingName }}</h5>
+              <p class="text-gray-600">{{ reservation.property?.propertyType }} | {{ reservation.property?.city }}, {{ reservation.property?.country }}</p>
+              <p class="text-sm text-gray-500">{{ reservation.property?.address }}</p>
+              <p class="text-sm font-bold text-gray-800">Money Spent: {{ reservation.moneySpent | currency }}</p>
+              <p><strong>From Date:</strong> {{ reservation.fromDate | date }}</p>
+              <p><strong>To Date:</strong> {{ reservation.toDate | date }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!loading" class="pagination flex justify-between mt-6">
+          <button 
+            [disabled]="currentPage === 1" 
+            (click)="onPageChange(currentPage - 1)" 
+            class="px-4 py-2 bg-gray-300 rounded text-gray-700 disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <button 
+            [disabled]="currentPage === totalPages" 
+            (click)="onPageChange(currentPage + 1)" 
+            class="px-4 py-2 bg-gray-300 rounded text-gray-700 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div class="summary-section w-full md:w-1/4">
+        <div class="summary-section p-6 bg-white rounded-lg shadow-md mb-6">
+          <h3 class="text-2xl font-semibold mb-4">Reservation Summary</h3>
+          <div class="summary-item mb-3">
+            <span>Total Money Spent on Hotel Rooms: </span>
+            <span class="font-semibold">{{ totalMoneySpentHotel | currency }}</span>
+          </div>
+          <div class="summary-item mb-3">
+            <span>Total Money Spent on Apartments: </span>
+            <span class="font-semibold">{{ totalMoneySpentApartment | currency }}</span>
+          </div>
+          <div class="summary-item">
+            <span>City with Most Reservations: </span>
+            <span class="font-semibold">{{ mostPopularCity }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

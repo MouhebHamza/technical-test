@@ -1,0 +1,28 @@
+<header class="fancy-header sticky top-0 z-50 bg-gray-800 shadow-md">
+  <div class="container mx-auto flex items-center justify-between p-4">
+    <div class="flex items-center space-x-3">
+      <a [routerLink]="'/'">
+        <img src="assets/logo.jpg" alt="Logo" class="h-10 cursor-pointer" />
+      </a>
+    </div>
+
+    <nav>
+      <ul class="flex space-x-4">
+        <li>
+          <a 
+            [routerLink]="'/properties'" 
+            class="nav-link text-white hover:text-gray-300">
+            Browse Properties
+          </a>
+        </li>
+        <li>
+          <a 
+            [routerLink]="'/reservations'" 
+            class="nav-link text-white hover:text-gray-300">
+            My Reservations
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

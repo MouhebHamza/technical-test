@@ -1,0 +1,108 @@
+<div class="search-section">
+  <div class="container">
+    <div class="search-bar-container">
+      <input
+        type="text"
+        class="search-bar"
+        placeholder="Search by City"
+        [(ngModel)]="filters.city"
+        (ngModelChange)="onSearchTextChange()" 
+      />
+    </div>
+  </div>
+</div>
+
+<div class="main-content">
+  <aside class="filters-section">
+    <form (ngSubmit)="onSubmit()">
+      <div class="filter-group">
+        <div class="filter-item">
+          <label>Building Name</label>
+          <input type="text" [(ngModel)]="filters.buildingName" name="buildingName" placeholder="Building Name" />
+        </div>
+
+        <div class="filter-item">
+          <label>Property Type</label>
+          <select [(ngModel)]="filters.propertyType" name="propertyType">
+            <option value="">Any</option>
+            <option value="hotel">Hotel</option>
+            <option value="apartment">Apartment</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label>City</label>
+          <input type="text" [(ngModel)]="filters.city" name="city" placeholder="City" />
+        </div>
+
+        <div class="filter-item">
+          <label>Country</label>
+          <input type="text" [(ngModel)]="filters.country" name="country" placeholder="Country" />
+        </div>
+
+        <div class="filter-item">
+          <label>Address</label>
+          <input type="text" [(ngModel)]="filters.address" name="address" placeholder="Address" />
+        </div>
+
+        <div class="filter-item">
+          <label>Price per day</label>
+          <input type="number" [(ngModel)]="filters.minPrice" name="minPrice" placeholder="Min Price" />
+          <input type="number" [(ngModel)]="filters.maxPrice" name="maxPrice" placeholder="Max Price" />
+        </div>
+
+        <div class="filter-item">
+          <label>Availability</label>
+          <select [(ngModel)]="filters.availability" name="availabilityStatus">
+            <option value="">Any</option>
+            <option value="Available">Available</option>
+            <option value="Booked">Booked</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button type="submit">Apply Filters</button>
+        </div>
+      </div>
+    </form>
+  </aside>
+
+  <main class="cards-section">
+    <div class="cards-grid">
+      <div
+        *ngFor="let property of paginatedProperties"
+        class="card"
+        (click)="onSelectProperty(property)"
+      >
+        <img src="assets/hotel.jpg" alt="{{ property.buildingName }}" class="card-image" />
+
+        <div class="card-body">
+          <h5 class="card-title">{{ property.buildingName }}</h5>
+          <p class="card-type">{{ property.propertyType }} | {{ property.city }}, {{ property.country }}</p>
+          <p class="card-address">{{ property.address }}</p>
+
+          <p class="card-price">
+            <span class="price-prefix">$</span>{{ property.price | number }}
+          </p>
+
+          <p class="card-availability" [ngClass]="{'available': property.availability === 'Available', 'booked': property.availability === 'Booked'}">
+            {{ property.availability }}
+          </p>
+        </div>
+
+        <div class="reservation-tooltip">
+          Make Reservation
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+        Previous
+      </button>
+      <button [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  </main>
+</div>
